@@ -23,7 +23,10 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        # --ignore-scripts: sharp & unrs-resolver ship prebuilt native binaries
+        # (@img/sharp-*, @unrs/*), so their build scripts aren't needed. pnpm's
+        # CI build-approval gate otherwise hard-fails (ERR_PNPM_IGNORED_BUILDS).
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
       - name: Lint
         run: pnpm lint
